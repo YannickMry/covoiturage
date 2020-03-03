@@ -53,11 +53,17 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trajet", mappedBy="conducteur")
      */
-    private $trajets;
+    private $trajetsConducteur;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Trajet", mappedBy="passagers")
+     */
+    private $trajetsPassager;
 
     public function __construct()
     {
-        $this->trajets = new ArrayCollection();
+        $this->trajetsConducteur = new ArrayCollection();
+        $this->trajetsPassager = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -172,29 +178,57 @@ class User implements UserInterface
     /**
      * @return Collection|Trajet[]
      */
-    public function getTrajets(): Collection
+    public function getTrajetsConducteur(): Collection
     {
-        return $this->trajets;
+        return $this->trajetsConducteur;
     }
 
-    public function addTrajet(Trajet $trajet): self
+    public function addTrajetsConducteur(Trajet $trajetsConducteur): self
     {
-        if (!$this->trajets->contains($trajet)) {
-            $this->trajets[] = $trajet;
-            $trajet->setConducteur($this);
+        if (!$this->trajetsConducteur->contains($trajetsConducteur)) {
+            $this->trajetsConducteur[] = $trajetsConducteur;
+            $trajetsConducteur->setConducteur($this);
         }
 
         return $this;
     }
 
-    public function removeTrajet(Trajet $trajet): self
+    public function removeTrajetsConducteur(Trajet $trajetsConducteur): self
     {
-        if ($this->trajets->contains($trajet)) {
-            $this->trajets->removeElement($trajet);
+        if ($this->trajetsConducteur->contains($trajetsConducteur)) {
+            $this->trajetsConducteur->removeElement($trajetsConducteur);
             // set the owning side to null (unless already changed)
-            if ($trajet->getConducteur() === $this) {
-                $trajet->setConducteur(null);
+            if ($trajetsConducteur->getConducteur() === $this) {
+                $trajetsConducteur->setConducteur(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trajet[]
+     */
+    public function getTrajetsPassager(): Collection
+    {
+        return $this->trajetsPassager;
+    }
+
+    public function addTrajetsPassager(Trajet $trajetsPassager): self
+    {
+        if (!$this->trajetsPassager->contains($trajetsPassager)) {
+            $this->trajetsPassager[] = $trajetsPassager;
+            $trajetsPassager->addPassager($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrajetsPassager(Trajet $trajetsPassager): self
+    {
+        if ($this->trajetsPassager->contains($trajetsPassager)) {
+            $this->trajetsPassager->removeElement($trajetsPassager);
+            $trajetsPassager->removePassager($this);
         }
 
         return $this;

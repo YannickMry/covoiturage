@@ -41,13 +41,13 @@ class Trajet
     private $places;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="trajets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="trajetsConducteur")
      * @ORM\JoinColumn(nullable=false)
      */
     private $conducteur;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="trajets")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="trajetsPassager")
      */
     private $passagers;
 
@@ -146,4 +146,5 @@ class Trajet
 
         return $this;
     }
+
 }
