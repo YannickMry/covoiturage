@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +32,22 @@ class Lieu
      * @ORM\Column(type="float")
      */
     private $latitude;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Trajet", mappedBy="lieuDepart")
+     */
+    private $trajetsDepart;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Trajet", mappedBy="lieuArrivee")
+     */
+    private $trajetsArrivee;
+
+    public function __construct()
+    {
+        $this->trajetsDepart = new ArrayCollection();
+        $this->trajetsArrivee = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -68,6 +86,68 @@ class Lieu
     public function setLatitude(float $latitude): self
     {
         $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trajet[]
+     */
+    public function getTrajetsDepart(): Collection
+    {
+        return $this->trajetsDepart;
+    }
+
+    public function addTrajetsDepart(Trajet $trajetsDepart): self
+    {
+        if (!$this->trajetsDepart->contains($trajetsDepart)) {
+            $this->trajetsDepart[] = $trajetsDepart;
+            $trajetsDepart->setLieuDepart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrajetsDepart(Trajet $trajetsDepart): self
+    {
+        if ($this->trajetsDepart->contains($trajetsDepart)) {
+            $this->trajetsDepart->removeElement($trajetsDepart);
+            // set the owning side to null (unless already changed)
+            if ($trajetsDepart->getLieuDepart() === $this) {
+                $trajetsDepart->setLieuDepart(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trajet[]
+     */
+    public function getTrajetsArrivee(): Collection
+    {
+        return $this->trajetsArrivee;
+    }
+
+    public function addTrajetsArrivee(Trajet $trajetsArrivee): self
+    {
+        if (!$this->trajetsArrivee->contains($trajetsArrivee)) {
+            $this->trajetsArrivee[] = $trajetsArrivee;
+            $trajetsArrivee->setLieuArrivee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrajetsArrivee(Trajet $trajetsArrivee): self
+    {
+        if ($this->trajetsArrivee->contains($trajetsArrivee)) {
+            $this->trajetsArrivee->removeElement($trajetsArrivee);
+            // set the owning side to null (unless already changed)
+            if ($trajetsArrivee->getLieuArrivee() === $this) {
+                $trajetsArrivee->setLieuArrivee(null);
+            }
+        }
 
         return $this;
     }
