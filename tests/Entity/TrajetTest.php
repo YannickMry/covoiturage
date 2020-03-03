@@ -68,10 +68,34 @@ class TrajetTest extends TestCase {
 
         $this->trajet->addPassager($passager);
         $this->trajet->addPassager($passager2);
-        
+
         $this->assertInstanceOf(ArrayCollection::class, $this->trajet->getPassagers());
         foreach ($this->trajet->getPassagers() as $passager) {
             $this->assertInstanceOf(User::class, $passager);
         }
+    }
+
+    public function testTrajetUniquePassagers()
+    {
+        $user = new User();
+
+        $this->trajet->addPassager($user);
+        $this->trajet->addPassager($user);
+
+        $this->assertNotEquals([$user, $user], $this->trajet->getPassagers()->toArray());
+    }
+
+    public function testTrajetConducteurNotPassager()
+    {
+        $conducteur = new User();
+        $conducteur->setNom('conducteur 1');
+
+        $passager = new User();
+        $passager->setNom('passager 1');
+
+        $this->trajet->setConducteur($conducteur);
+        $this->trajet->addPassager($passager);
+
+        $this->assertFalse(in_array($this->trajet->getConducteur(), $this->trajet->getPassagers()->toArray()));
     }
 }
