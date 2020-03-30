@@ -14,42 +14,22 @@ class DefaultControllerTest extends WebTestCase {
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function testHomepageLinkConnexion()
+    /**
+     * Quand l'utilisateur est connecté
+     */
+    public function testHomepageUserLink()
     {
-        $client = static::createClient();
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'nomp',
+            'PHP_AUTH_PW' => 'test'
+        ]);
         $crawler = $client->request('GET', '/');
 
-        $link = $crawler->selectLink('Connexion')->link();
+        $this->assertSelectorExists('a[href="/login"]', 'Connexion');
+        //$this->assertSelectorNotExists('a[href="/register"]', 'Sign up');
+        // $this->assertSelectorExists('a[href="/logout"]');
         
-        $client->click($link);
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/login', $client->getRequest()->getPathInfo());
-    }
-
-    public function testHomepageLinkRegister()
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/');
-
-        $link = $crawler->selectLink('Sign up')->link();
-        
-        $client->click($link);
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/register', $client->getRequest()->getPathInfo());
-    }
-
-    public function testHomepageLinkResearchTrajet()
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/');
-
-        $link = $crawler->selectLink('Rechercher trajet')->link();
-        
-        $client->click($link);
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/research-trajet', $client->getRequest()->getPathInfo());
+        // $client->clickLink('Déconnexion');
+        // $this->assertResponseRedirects('http://localhost/');
     }
 }
