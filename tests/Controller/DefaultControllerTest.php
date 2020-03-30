@@ -15,21 +15,15 @@ class DefaultControllerTest extends WebTestCase {
     }
 
     /**
-     * Quand l'utilisateur est connecté
+     * Quand l'utilisateur est déconnecté
      */
-    public function testHomepageUserLink()
+    public function testHomepageUserLinks()
     {
-        $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'nomp',
-            'PHP_AUTH_PW' => 'test'
-        ]);
-        $crawler = $client->request('GET', '/');
+        $client = static::createClient([], []);
+        $crawler = $client->request('GET', '/', [], [], []);
 
         $this->assertSelectorExists('a[href="/login"]', 'Connexion');
-        //$this->assertSelectorNotExists('a[href="/register"]', 'Sign up');
-        // $this->assertSelectorExists('a[href="/logout"]');
-        
-        // $client->clickLink('Déconnexion');
-        // $this->assertResponseRedirects('http://localhost/');
+        $this->assertSelectorNotExists('a[href="/logout"]', 'Deconnexion');
+        $this->assertSelectorExists('a[href="/register"]', 'Sign up');
     }
 }

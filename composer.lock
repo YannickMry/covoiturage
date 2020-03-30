@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbc0329d7394fbe1530c4d463a04c3bd",
+    "content-hash": "b9a6f13774be8cded0a3ba07352fa6f8",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -6797,16 +6797,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v5.0.5",
+            "version": "v5.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "b8fee53045a55ccbb9209e453bf6fdcf74381959"
+                "reference": "cb3f0f5bf8776bccaf8d61e4c91a573db58a19b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/b8fee53045a55ccbb9209e453bf6fdcf74381959",
-                "reference": "b8fee53045a55ccbb9209e453bf6fdcf74381959",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/cb3f0f5bf8776bccaf8d61e4c91a573db58a19b6",
+                "reference": "cb3f0f5bf8776bccaf8d61e4c91a573db58a19b6",
                 "shasum": ""
             },
             "require": {
@@ -6858,7 +6858,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2020-02-24T15:05:31+00:00"
+            "time": "2020-03-15T14:33:06+00:00"
         },
         {
             "name": "symfony/profiler-pack",
