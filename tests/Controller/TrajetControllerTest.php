@@ -24,7 +24,6 @@ class TrajetControllerTest extends WebTestCase {
         
         $crawler = $client->request('GET', '/trajet/new');
 
-        $this->assertNotEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertResponseRedirects('/login');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }
