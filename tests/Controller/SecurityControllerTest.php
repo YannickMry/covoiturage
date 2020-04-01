@@ -24,4 +24,22 @@ class SecurityControllerTest extends WebTestCase {
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+
+    public function testLoginWithBadCredantials() 
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/login');
+
+        $form = $crawler->selectButton('Se connecter')->form([
+            'username' => 'nomp',
+            'password' => 'fakepassword',
+        ]);
+
+        $client->submit($form);
+
+        $this->assertResponseRedirects('/login');
+        $client->followRedirect();
+
+        $this->assertSelectorExists('.alert.alert-danger');
+    }
 }
