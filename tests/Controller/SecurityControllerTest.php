@@ -42,4 +42,19 @@ class SecurityControllerTest extends WebTestCase {
 
         $this->assertSelectorExists('.alert.alert-danger');
     }
+
+    public function testSuccessfullLogin() 
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/login');
+
+        $form = $crawler->selectButton('Se connecter')->form([
+            'username' => 'nomp',
+            'password' => 'test',
+        ]);
+
+        $client->submit($form);
+
+        $this->assertResponseRedirects('/trajet/');
+    }
 }
