@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TrajetControllerTest extends WebTestCase {
@@ -9,9 +10,10 @@ class TrajetControllerTest extends WebTestCase {
     // Redirige vers /login si on veut acceder a new trajet (Si on est pas connecté)
     public function testForbiddenToUser(){
         $client = static::createClient();
-        $crawler = $client->request('GET', '/trajet/new');
+        $client->request('GET', '/trajet/new');
 
-        $this->assertNotEquals(200, $client->getResponse()->getStatusCode());
+        // Il trouve la page mais il se fait rediriger vers /login
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND); 
         $this->assertResponseRedirects('/login');
     }
 
@@ -22,8 +24,8 @@ class TrajetControllerTest extends WebTestCase {
             'PHP_AUTH_PW' => 'test'
         ]);
         
-        $crawler = $client->request('GET', '/trajet/new');
+        $client->request('GET', '/trajet/new');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 }
