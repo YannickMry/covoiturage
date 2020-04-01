@@ -48,7 +48,6 @@ class Trajet
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="trajetsConducteur")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull
      */
     private $conducteur;
 

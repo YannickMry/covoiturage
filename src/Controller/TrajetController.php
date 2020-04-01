@@ -36,6 +36,7 @@ class TrajetController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $trajet->setConducteur($this->getUser());
             $entityManager->persist($trajet);
             $entityManager->flush();
 

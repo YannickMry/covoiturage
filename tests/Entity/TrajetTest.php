@@ -133,12 +133,11 @@ class TrajetTest extends KernelTestCase {
             // ->setLieuArrivee($lieuArrivee)
             ->setDateDepart((new \DateTime())->modify('-1 day')) // error 1 : greater than today
             ->setPlaces(0) // error 2 : should be more than 0
-            // ->setConducteur((new User())->setNom('Conducteur'))
             ;
         
         self::bootKernel();
         $error = self::$container->get('validator')->validate($trajet);
 
-        $this->assertCount(5, $error);
+        $this->assertCount(4, $error);
     }
 }
