@@ -5,6 +5,11 @@
 {% block body %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <a href="{{ path('app_logout') }}">Deconnexion</a>
+        <a href="{{ path('trajet_index') }}">Mes trajets</a>
+        <a href="{{ path('trajet_new') }}">Ajouter un trajet</a>
+        <form action="">
+            <button>Rechercher un trajet</button>
+        </form>
     {% else %}
         <a href="{{ path('app_login') }}">Connexion</a>
         <a href="{{ path('app_register') }}">Sign up</a>

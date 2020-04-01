@@ -22,9 +22,9 @@ class DefaultControllerTest extends WebTestCase {
         $client = static::createClient([], []);
         $crawler = $client->request('GET', '/', [], [], []);
 
-        $this->assertSelectorExists('a[href="/login"]', 'Connexion');
-        $this->assertSelectorExists('a[href="/register"]', 'Sign up');
-        $this->assertSelectorNotExists('a[href="/logout"]', 'Deconnexion'); 
+        $this->assertSelectorExists('a[href="/login"]');
+        $this->assertSelectorExists('a[href="/register"]');
+        $this->assertSelectorNotExists('a[href="/logout"]'); 
     }
 
     /**
@@ -38,8 +38,11 @@ class DefaultControllerTest extends WebTestCase {
         ]);
         $client->request('GET', '/');
 
-        $this->assertSelectorNotExists('a[href="/login"]', 'Connexion');
-        $this->assertSelectorNotExists('a[href="/register"]', 'Sign up');
-        $this->assertSelectorExists('a[href="/logout"]', 'Deconnexion');
+        $this->assertSelectorExists('a[href="/logout"]');
+        $this->assertSelectorExists('a[href="/trajet/"]');
+        $this->assertSelectorExists('a[href="/trajet/new"]');
+        $this->assertSelectorTextContains('button', 'Rechercher un trajet');
+        $this->assertSelectorTextNotContains('a', 'Sign up');
+        $this->assertSelectorTextNotContains('a', 'Connexion');
     }
 }
