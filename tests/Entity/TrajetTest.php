@@ -3,13 +3,12 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Lieu;
-use PHPUnit\Framework\TestCase;
 use App\Entity\Trajet;
 use App\Entity\User;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class TrajetTest extends TestCase {
+class TrajetTest extends KernelTestCase {
 
     protected $trajet;
 
@@ -97,5 +96,49 @@ class TrajetTest extends TestCase {
         $this->trajet->addPassager($passager);
 
         $this->assertFalse(in_array($this->trajet->getConducteur(), $this->trajet->getPassagers()->toArray()));
+    }
+
+    public function testValidTrajet()
+    {
+        $lieuDepart = (new Lieu())
+            ->setNom("Depart")
+            ->setLongitude(45.555)
+            ->setLatitude(5.555);
+
+        $lieuArrivee = (new Lieu())
+            ->setNom("Arrivee")
+            ->setLongitude(45.555)
+            ->setLatitude(5.555);
+
+        $trajet = (new Trajet())
+            ->setLieuDepart($lieuDepart)
+            ->setLieuArrivee($lieuArrivee)
+            ->setDateDepart(new \DateTime())
+            ->setPlaces(3)
+            ->setConducteur((new User())->setNom('Conducteur'))
+            ->addPassager((new User())->setNom('Passager1'))
+            ->addPassager((new User())->setNom('Passager2'))
+            ->addPassager((new User())->setNom('Passager3'));
+        
+        self::bootKernel();
+        $error = self::$container->get('validator')->validate($trajet);
+
+        $this->assertCount(0, $error);
+    }
+
+    public function testInvalidTrajet()
+    {
+        $trajet = (new Trajet())
+            // ->setLieuDepart($lieuDepart)
+            // ->setLieuArrivee($lieuArrivee)
+            ->setDateDepart((new \DateTime())->modify('-1 day')) // error 1 : greater than today
+            ->setPlaces(0) // error 2 : should be more than 0
+            // ->setConducteur((new User())->setNom('Conducteur'))
+            ;
+        
+        self::bootKernel();
+        $error = self::$container->get('validator')->validate($trajet);
+
+        $this->assertCount(5, $error);
     }
 }

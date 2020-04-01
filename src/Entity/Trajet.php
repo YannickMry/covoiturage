@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrajetRepository")
@@ -21,28 +22,33 @@ class Trajet
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="trajetsDepart")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull
      */
     private $lieuDepart;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="trajetsArrivee")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull
      */
     private $lieuArrivee;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan("today")
      */
     private $dateDepart;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $places;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="trajetsConducteur")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull
      */
     private $conducteur;
 
