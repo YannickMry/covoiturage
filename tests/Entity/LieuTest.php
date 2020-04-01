@@ -2,11 +2,10 @@
 
 namespace App\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
 use App\Entity\Lieu;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-
-class LieuTest extends TestCase {
+class LieuTest extends KernelTestCase {
 
     protected $lieu;
 
@@ -37,5 +36,42 @@ class LieuTest extends TestCase {
     {
         $this->lieu->setLatitude(5.725154);
         $this->assertEquals(5.725154, $this->lieu->getLatitude());
+    }
+
+    public function testValidLieu()
+    {
+        $lieu = (new Lieu())
+            ->setNom("Test")
+            ->setLatitude(45.18998)
+            ->setLongitude(5.633585);
+        
+        self::bootKernel();
+
+        $error = self::$container->get('validator')->validate($lieu);
+        $this->assertCount(0, $error);
+    }
+
+    public function testInvalidLieuNom()
+    {
+        $lieu = (new Lieu())
+            ->setNom("")
+            ->setLatitude(45.18998)
+            ->setLongitude(5.633585);
+        
+        self::bootKernel();
+
+        $error = self::$container->get('validator')->validate($lieu);
+        $this->assertCount(1, $error);
+    }
+
+    public function testInvalidLieuLatitudeLongitude()
+    {
+        $lieu = (new Lieu())
+            ->setNom("Test");
+        
+        self::bootKernel();
+
+        $error = self::$container->get('validator')->validate($lieu);
+        $this->assertCount(2, $error);
     }
 }
