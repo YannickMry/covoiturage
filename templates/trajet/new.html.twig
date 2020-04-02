@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Trajet{% endblock %}
+{% block title %}Nouveau trajet{% endblock %}
 
 {% block body %}
-    <h1>Create new Trajet</h1>
+    <h1>Création d'un nouveau trajet</h1>
 
-    {{ include('trajet/_form.html.twig') }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Créer</button>
+    {{ form_end(form) }}
 
-    <a href="{{ path('trajet_index') }}">back to list</a>
+    <a href="{{ path('lieu_new') }}" class="btn btn-sm btn-primary">Créer un nouveau lieu</a>
+    <a href="{{ path('trajet_index') }}">retour à la liste</a>
 {% endblock %}

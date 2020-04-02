@@ -28,4 +28,19 @@ class TrajetControllerTest extends WebTestCase {
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
+
+    public function testTitleAndLinks()
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'nomp',
+            'PHP_AUTH_PW' => 'test'
+        ]);
+        
+        $client->request('GET', '/trajet/new');
+
+        $this->assertSelectorTextContains('h1', "Création d'un nouveau trajet");
+        $this->assertSelectorTextContains('button', "Créer");
+        $this->assertSelectorTextContains('a', "Créer un nouveau lieu");
+        $this->assertSelectorExists('a[href="/lieu/new"]');
+    }
 }
