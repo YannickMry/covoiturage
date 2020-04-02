@@ -3,35 +3,102 @@
 {% block title %}Trajet index{% endblock %}
 
 {% block body %}
-    <h1>Trajet index</h1>
+<div class="row">
+    <div class="col-12">
+        <h1>Tous les trajets</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>DateDepart</th>
-                <th>Places</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for trajet in trajets %}
-            <tr>
-                <td>{{ trajet.id }}</td>
-                <td>{{ trajet.dateDepart ? trajet.dateDepart|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ trajet.places }}</td>
-                <td>
-                    <a href="{{ path('trajet_show', {'id': trajet.id}) }}">show</a>
-                    <a href="{{ path('trajet_edit', {'id': trajet.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('trajet_new') }}">Create new</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Départ</th>
+                    <th>Arrivée</th>
+                    <th>DateDepart</th>
+                    <th>Places</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for trajet in trajets %}
+                <tr>
+                    <td>{{ trajet.id }}</td>
+                    <td>{{ trajet.lieuDepart.nom }}</td>
+                    <td>{{ trajet.lieuArrivee.nom }}</td>
+                    <td>{{ trajet.dateDepart ? trajet.dateDepart|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ (trajet.places - trajet.passagers|length) }}</td>
+                    <td>
+                        {% if trajet.conducteur.id is same as(app.user.id) %}
+                            <a href="{{ path('trajet_edit', {'id': trajet.id}) }}" class="btn btn-warning" id="edit">Editer</a>
+                        {% else %}
+                            <a href="" class="btn btn-success">Réserver</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    
+        <a href="{{ path('trajet_new') }}" class="btn btn-primary" id="new">Créer un nouveau trajet</a>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-6">
+        <h2 id="conducteur">Mes trajets en tant que conducteur</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Départ</th>
+                    <th>Arrivée</th>
+                    <th>DateDepart</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for trajetC in trajetsConducteur %}
+                <tr>
+                    <td>{{ trajetC.id }}</td>
+                    <td>{{ trajetC.lieuDepart.nom }}</td>
+                    <td>{{ trajetC.lieuArrivee.nom }}</td>
+                    <td>{{ trajetC.dateDepart ? trajetC.dateDepart|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun trajet en tant que conducteur n'a été effectué</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-6">
+        <h2 id="passager">Mes trajets en tant que passager</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Départ</th>
+                    <th>Arrivée</th>
+                    <th>DateDepart</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for trajetP in trajetsPassager %}
+                <tr>
+                    <td>{{ trajetP.id }}</td>
+                    <td>{{ trajetP.lieuDepart.nom }}</td>
+                    <td>{{ trajetP.lieuArrivee.nom }}</td>
+                    <td>{{ trajetP.dateDepart ? trajetP.dateDepart|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun trajet en tant que passager n'a été effectué</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

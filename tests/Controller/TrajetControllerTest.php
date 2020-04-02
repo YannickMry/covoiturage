@@ -29,7 +29,23 @@ class TrajetControllerTest extends WebTestCase {
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
-    public function testTitleAndLinks()
+    public function testTitleAndLinksForIndexTrajet()
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'nomp',
+            'PHP_AUTH_PW' => 'test'
+        ]);
+        
+        $client->request('GET', '/trajet/');
+
+        $this->assertSelectorTextContains('h1', "Tous les trajets");
+        $this->assertSelectorTextContains('h2#conducteur', "Mes trajets en tant que conducteur");
+        $this->assertSelectorTextContains('h2#passager', "Mes trajets en tant que passager");
+        $this->assertSelectorTextContains('a#new', "Créer un nouveau trajet");
+        $this->assertSelectorExists('a[href="/trajet/new"]');
+    }
+    
+    public function testTitleAndLinksForNewTrajet()
     {
         $client = static::createClient([], [
             'PHP_AUTH_USER' => 'nomp',

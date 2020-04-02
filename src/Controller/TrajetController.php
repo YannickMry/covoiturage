@@ -22,6 +22,8 @@ class TrajetController extends AbstractController
     {
         return $this->render('trajet/index.html.twig', [
             'trajets' => $trajetRepository->findAll(),
+            'trajetsConducteur' => $this->getUser()->getTrajetsConducteur(),
+            'trajetsPassager' => $this->getUser()->getTrajetsPassager()
         ]);
     }
 
