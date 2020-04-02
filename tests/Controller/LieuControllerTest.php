@@ -28,4 +28,43 @@ class LieuControllerTest extends WebTestCase {
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
+
+    public function testLieuValid()
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'nomp',
+            'PHP_AUTH_PW' => 'test'
+        ]);
+        $crawler = $client->request('GET', '/lieu/new');
+        $client->enableProfiler();
+
+        $form = $crawler->selectButton("Save")->form([
+            'lieu[nom]'            => 'Toulouse',
+            'lieu[longitude]'         => 35.68945,
+            'lieu[latitude]'          => 5.86789,
+        ]);
+
+        $client->submit($form);
+        $this->assertSelectorNotExists('.form-error-message');
+        $this->assertResponseRedirects();
+    }
+    
+    public function testLieuInvalidName()
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'nomp',
+            'PHP_AUTH_PW' => 'test'
+        ]);
+        $crawler = $client->request('GET', '/lieu/new');
+        $client->enableProfiler();
+
+        $form = $crawler->selectButton("Save")->form([
+            'lieu[nom]'            => 'Toulouse',
+            'lieu[longitude]'         => 45.6666,
+            'lieu[latitude]'          => 5.22222,
+        ]);
+
+        $client->submit($form);
+        $this->assertSelectorExists('.form-error-message');
+    }
 }
