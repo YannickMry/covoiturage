@@ -59,7 +59,7 @@ class LieuControllerTest extends WebTestCase {
         $client->enableProfiler();
 
         $form = $crawler->selectButton("Save")->form([
-            'lieu[nom]'            => 'Grenoble',
+            'lieu[nom]'            => 'Toulouse',
             'lieu[longitude]'         => 45.6666,
             'lieu[latitude]'          => 5.22222,
         ]);

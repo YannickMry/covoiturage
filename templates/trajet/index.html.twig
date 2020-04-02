@@ -30,7 +30,11 @@
                         {% if trajet.conducteur.id is same as(app.user.id) %}
                             <a href="{{ path('trajet_edit', {'id': trajet.id}) }}" class="btn btn-warning" id="edit">Editer</a>
                         {% else %}
-                            <a href="" class="btn btn-success">Réserver</a>
+                            {% if not trajet.isUserAlreadyInTrajet(app.user) %}
+                            <a href="{{ path('trajet_reserver', {'id': trajet.id}) }}" class="btn btn-success">Réserver</a>
+                            {% else %}
+                            <span class="alert alert-info">Réservé</span>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>

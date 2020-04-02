@@ -94,4 +94,17 @@ class TrajetController extends AbstractController
 
         return $this->redirectToRoute('trajet_index');
     }
+
+    /**
+     * @Route("/reserver/{id}", name="trajet_reserver", methods={"GET"})
+     */
+    public function reserer(Trajet $trajet): Response
+    {
+        if(!in_array($this->getUser(), $trajet->getPassagers()->toArray())){
+            $trajet->addPassager($this->getUser());
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        return $this->redirectToRoute('trajet_index');
+    }
 }

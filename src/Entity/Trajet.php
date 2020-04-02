@@ -152,4 +152,9 @@ class Trajet
         return $this;
     }
 
+    public function isUserAlreadyInTrajet(User $user)
+    {
+        return in_array($user, $this->getPassagers()->toArray());
+    }
+
 }
